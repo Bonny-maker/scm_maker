@@ -19,7 +19,6 @@ export async function generateStaticParams() {
     { locale: "fa" },
     { locale: "ar" },
     { locale: "tr" },
-    // Add all supported locales here
   ];
 }
 
