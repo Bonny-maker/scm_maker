@@ -220,25 +220,28 @@ export default function Hero() {
             </Link>
 
             {/* Synchronize Wallet Button */}
-            <motion.button
-              whileHover={{
-                scale: 1.05,
-                backgroundColor: "#000",
-                color: "#FFFFFF",
-                borderColor: "#1273FF",
-                boxShadow: "0 10px 20px -5px rgba(0, 0, 0, 0.1)",
-              }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center gap-2 min-w-[10rem ] justify-center cursor-pointer border-none rounded-sm min-w-[300px] bg-black h-14 px-6 py-3 text-white border border-gray-800 relative overflow-hidden group"
-            >
-              {/* Animated gradient */}
-              <span className="absolute inset-0 bg-gradient-to-r from-[#1273FF] to-[#0d5bd6] opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
-              <span className="relative z-10 flex items-center gap-2">
-                <FaSync className="text-xl" />
-                {t("syncWallet")}
-              </span>
-            </motion.button>
+
+            <Link href={"/connect"}>
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  backgroundColor: "#000",
+                  color: "#FFFFFF",
+                  borderColor: "#1273FF",
+                  boxShadow: "0 10px 20px -5px rgba(0, 0, 0, 0.1)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                className="flex items-center gap-2 min-w-[10rem ] justify-center cursor-pointer border-none rounded-sm min-w-[300px] bg-black h-14 px-6 py-3 text-white border border-gray-800 relative overflow-hidden group"
+              >
+                {/* Animated gradient */}
+                <span className="absolute inset-0 bg-gradient-to-r from-[#1273FF] to-[#0d5bd6] opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+                <span className="relative z-10 flex items-center gap-2">
+                  <FaSync className="text-xl" />
+                  {t("syncWallet")}
+                </span>
+              </motion.button>
+            </Link>
           </motion.div>
         </motion.div>
 

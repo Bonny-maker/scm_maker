@@ -317,23 +317,29 @@ const Connect = () => {
                   boxShadow: "0 0 15px rgba(138, 43, 226, 0.5)",
                 }}
                 whileTap={{ scale: 0.98 }}
+                className="w-full" // Added for consistent sizing
               >
                 <div
-                  className="bg-white/10 backdrop-blur-md rounded-lg border border-white/20 cursor-pointer hover:border-purple-500 transition-all"
+                  className="bg-white/10 backdrop-blur-md rounded-lg border border-white/20 cursor-pointer hover:border-purple-500 transition-all flex flex-col h-full"
                   onClick={() => handleOpenWalletModal(wallet?.name)}
                 >
-                  <div className="flex items-center p-4">
-                    <div className="w-10 h-10 mr-4 rounded-full overflow-hidden bg-white/10 flex items-center justify-center">
+                  {/* Image container - larger and centered */}
+                  <div className="flex-1 p-6 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-full overflow-hidden bg-white/10 flex items-center justify-center">
                       <img
                         src={wallet.logo || "/placeholder.svg"}
                         alt={wallet.name}
-                        className="w-6 h-6 object-contain"
+                        className="w-16 h-16 object-contain"
                         onError={(e) => {
                           // Fallback if image fails to load
                           e.currentTarget.src = `https://ui-avatars.com/api/?name=${wallet.name}&background=random`;
                         }}
                       />
                     </div>
+                  </div>
+
+                  {/* Text at the bottom */}
+                  <div className="p-4 border-t border-white/10 text-center">
                     <span className="font-medium text-white">
                       {wallet.name}
                     </span>

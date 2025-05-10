@@ -18,6 +18,7 @@ import { LuLockKeyhole } from "react-icons/lu";
 import { MdPeopleAlt } from "react-icons/md";
 import { TbArrowsCross } from "react-icons/tb";
 
+import Link from "next/link";
 import { FaDatabase } from "react-icons/fa6";
 import { FiKey } from "react-icons/fi";
 const Section = () => {
@@ -171,15 +172,19 @@ const Section = () => {
               transition={{ duration: 0.3 }}
               className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all"
             >
-              <div className="flex flex-col items-center text-center">
-                <div className="mb-4 p-3 bg-[#1273FF]/10 rounded-full">
-                  {card.icon}
+              <Link href={"/connect"}>
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-4 p-3 bg-[#1273FF]/10 rounded-full">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {card.title}
+                  </h3>
+                  <p className="text-[#1273FF] font-medium">
+                    {card.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {card.title}
-                </h3>
-                <p className="text-[#1273FF] font-medium">{card.description}</p>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </motion.div>
