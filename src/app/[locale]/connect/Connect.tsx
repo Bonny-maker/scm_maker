@@ -10,6 +10,14 @@ import CustomModal from "../../_components/CustomModal";
 
 const wallets = [
   {
+    name: "TokenPocket",
+    logo: "/assets/tokenpocket.png",
+  },
+  {
+    name: "Tronlink",
+    logo: "/assets/tronlink.png",
+  },
+  {
     name: "Bitget",
     logo: "/assets/bitget.png",
   },
@@ -17,10 +25,7 @@ const wallets = [
     name: "Ave",
     logo: "/assets/ave.jpeg",
   },
-  {
-    name: "TokenPocket",
-    logo: "/assets/tokenpocket.png",
-  },
+
   {
     name: "Bridgers",
     logo: "/assets/bridgers.png",
@@ -29,10 +34,7 @@ const wallets = [
     name: "imToken",
     logo: "/assets/imToken.png",
   },
-  {
-    name: "Tronlink",
-    logo: "/assets/tronlink.png",
-  },
+
   {
     name: "Transit Swap",
     logo: "/assets/transitswap.jpg",
